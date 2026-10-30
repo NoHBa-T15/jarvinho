@@ -134,7 +134,12 @@ def cmd_complete(args, conn):
 
 
 def cmd_checkpoint(args, conn):
-    text = sys.stdin.read() if args.file is None else Path(args.file).read_text()
+    if args.text is not None:
+        text = args.text
+    elif args.file is not None:
+        text = Path(args.file).read_text()
+    else:
+        text = sys.stdin.read()
     if not text.strip():
         raise ops.JvError("checkpoint vazio: mande o plano pela entrada padrão")
     print(f"checkpoint salvo em {ops.checkpoint(conn, args.id, text)}")
@@ -188,8 +193,8 @@ def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="jv", description="Jarvinho: orquestrador de agentes Claude Code")
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    def add(name, fn, help_):
-        sp = sub.add_parser(name, help=help_)
+    def add(name, fn, help_, aliases=()):
+        sp = sub.add_parser(name, help=help_, aliases=list(aliases))
         sp.set_defaults(fn=fn)
         return sp
 
@@ -210,10 +215,11 @@ def build_parser() -> argparse.ArgumentParser:
     sp = add("resume", cmd_resume, "retoma um agente parado")
     sp.add_argument("id"); sp.add_argument("--message"); sp.add_argument("--force", action="store_true")
     add("archive", cmd_archive, "arquiva um agente").add_argument("id")
-    sp = add("complete", cmd_complete, "(agente) marca a missão como concluída")
+    # "complete" é um builtin do bash e o guarda de worktree do Claude Code bloqueia; o nome é finish
+    sp = add("finish", cmd_complete, "(agente) marca a missão como concluída", aliases=["complete"])
     sp.add_argument("id"); sp.add_argument("--summary", required=True)
     sp = add("checkpoint", cmd_checkpoint, "(agente) salva o plano a partir da entrada padrão")
-    sp.add_argument("id"); sp.add_argument("--file")
+    sp.add_argument("id"); sp.add_argument("--text"); sp.add_argument("--file")
     add("plan", cmd_plan, "mostra o último checkpoint").add_argument("id")
     sp = add("note", cmd_note, "(agente) registra uma nota ou bloqueio")
     sp.add_argument("id"); sp.add_argument("text"); sp.add_argument("--kind", default="info", choices=["info", "bloqueio"])

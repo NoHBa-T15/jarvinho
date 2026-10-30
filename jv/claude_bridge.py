@@ -123,7 +123,10 @@ def transcript_tail(path: str | None, n: int = 12) -> list[dict]:
                 out.append({"ts": rec.get("timestamp"), "role": role, "text": block["text"][:2000]})
             elif t == "tool_use":
                 inp = block.get("input") or {}
-                hint = inp.get("command") or inp.get("file_path") or inp.get("pattern") or ""
+                hint = str(inp.get("command") or inp.get("file_path") or inp.get("pattern") or "")
+                first = hint.strip().splitlines()[0] if hint.strip() else ""
+                if len(first) > 160 or len(hint.strip().splitlines()) > 1:
+                    first = first[:160] + " …"
                 out.append({"ts": rec.get("timestamp"), "role": "tool",
-                            "text": f"{block.get('name')}: {str(hint)[:300]}"})
+                            "text": f"{block.get('name')}: {first}".rstrip(": ")})
     return out[-n:]

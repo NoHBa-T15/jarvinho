@@ -43,7 +43,8 @@ def run(conn, do_resume: bool = False) -> list[dict]:
             if not has_open and db.set_status(conn, aid, "ativa", ""):
                 report.append({"agent": aid, "action": "ativa"})
         elif state == "blocked":
-            if db.set_status(conn, aid, "pendente", "aguardando permissão ou entrada"):
+            reason = "decisão aberta" if has_open else "aguardando permissão ou entrada"
+            if db.set_status(conn, aid, "pendente", reason):
                 report.append({"agent": aid, "action": "pendente"})
         elif state == "done":
             if row["status"] in ("ativa", "interrompida"):

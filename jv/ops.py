@@ -13,11 +13,11 @@ LIVE_STATES = {"working", "blocked", "done"}  # processo vivo no agent view
 JV_BIN = str(db.REPO_ROOT / "bin" / "jv")
 
 KICKOFF = (
-    "Comece agora. Primeiro registre seu plano com `jv checkpoint {id}`, "
+    "Comece agora. Primeiro registre seu plano com o comando checkpoint do protocolo, "
     "depois execute a missão seguindo o protocolo do Jarvinho."
 )
 RESUME_DEFAULT = (
-    "Você foi retomado pelo Jarvinho depois de uma interrupção. Rode `jv plan {id}` para ler "
+    "Você foi retomado pelo Jarvinho depois de uma interrupção. Rode `" + JV_BIN + " plan {id}` para ler "
     "seu último checkpoint, confira o que já aconteceu de fato antes de repetir qualquer passo "
     "com efeito externo, e continue de onde parou."
 )

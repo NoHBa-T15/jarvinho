@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": ["Bash(jv:*)", "Bash(./bin/jv:*)", "Bash(claude agents:*)"]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/bin/jv reconcile --resume; \"$CLAUDE_PROJECT_DIR\"/bin/jv status"
+          }
+        ]
+      }
+    ]
+  }
+}
