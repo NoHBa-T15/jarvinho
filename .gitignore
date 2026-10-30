@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+# Estado do usuário nunca entra no repo
+.jarvinho/
+*.db
+panel/snapshot.html

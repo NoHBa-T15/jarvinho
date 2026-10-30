@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": ["Bash({jv}:*)", "Bash(jv:*)"]
+  },
+  "hooks": {
+    "SessionStart":     [{"hooks": [{"type": "command", "command": "{jv} hook SessionStart"}]}],
+    "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "{jv} hook UserPromptSubmit"}]}],
+    "PostToolUse":      [{"matcher": "*", "hooks": [{"type": "command", "command": "{jv} hook PostToolUse"}]}],
+    "Notification":     [{"hooks": [{"type": "command", "command": "{jv} hook Notification"}]}],
+    "Stop":             [{"hooks": [{"type": "command", "command": "{jv} hook Stop"}]}],
+    "SessionEnd":       [{"hooks": [{"type": "command", "command": "{jv} hook SessionEnd"}]}]
+  }
+}

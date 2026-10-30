@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Porta de entrada do Jarvinho. Funciona via symlink (jv init cria ~/.local/bin/jv).
+ROOT="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m jv.cli "$@"
